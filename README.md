@@ -27,7 +27,15 @@ This project demonstrates five agentic workflow patterns:
 ### Requirements
 
 ```bash
-pip install openai requests biopython pandas chembl-webresource-client python-dotenv
+pip install -r requirements.txt
+```
+
+### Conda Environment (Optional)
+
+```bash
+conda create -n drug-repositioning python=3.11
+conda activate drug-repositioning
+pip install -r requirements.txt
 ```
 
 ### Environment Variables
@@ -46,6 +54,8 @@ ENTREZ_EMAIL=your_email@example.com
 ```
 
 ## Running the Project
+
+Run from the repo root and include `PYTHONPATH=.` so `ls_action_space` imports resolve.
 
 ### Mock Mode (Recommended for Development)
 
@@ -72,20 +82,9 @@ PYTHONPATH=. TARGET=SIGMAR1 DISEASE=depression USE_MOCK_DATA=true python starter
 ## Project Structure
 
 ```
-scaffold.py          # Main file - implement TODOs here
-├── Configuration    # DO NOT MODIFY
-├── Utilities        # DO NOT MODIFY  
-├── Data Classes     # DO NOT MODIFY
-├── Mock Data        # DO NOT MODIFY
-├── API Functions    # DO NOT MODIFY
-├── BaseAgent        # DO NOT MODIFY
-└── YOUR CODE        # Implement TODOs 1-10
-    ├── ActionPlanningAgent
-    ├── RoutingAgent
-    ├── DataMiningAgent
-    ├── LiteratureAgent
-    ├── EvaluationAgent
-    └── DrugRepurposingOrchestrator
+starter/scaffold.py          # Main file - implement TODOs here
+ls_action_space/             # API helpers + mock/live data access
+requirements.txt             # Python dependencies
 ```
 
 ## Your Tasks
@@ -158,32 +157,25 @@ Successful execution produces:
 ============================================================
 DRUG REPURPOSING AGENTIC WORKFLOW
 Target: TMEM97 | Disease: non-alcoholic steatohepatitis
-Mock mode: False
-Max candidates to enrich: 5
+Mock mode: True
 ============================================================
 
 
-[Planning] ActionPlanningAgent creating plan...
-  Objective: Identify and evaluate existing drugs that can be repurposed for the treatment of non-alcoholic steatohepatitis by targeting TMEM97.
+[Planning] Creating action plan...
+  Objective: Find repurposable drugs for TMEM97 in non-alcoholic steatohepatitis
   Steps: ['data_mining', 'enrichment', 'scoring', 'roadmap']
 
-[Step 1] Query ChEMBL and Open Targets databases to identify compounds that interact with TMEM97 and have potential relevance to non-alcoholic steatohepatitis.
-  Routed to: DataMiningAgent
+[Step 1] Mine databases
 
-[Step 2] Gather literature evidence and safety data on the identified compounds, focusing on their mechanisms of action, previous clinical trials, and any reported effects on liver health.
-  Routed to: LiteratureAgent + SafetyAgent
+[Step 2] Enrich candidates
   Enriching top 5 candidates...
 
-[Step 3] Score and rank the identified compounds based on their efficacy, safety profiles, and relevance to TMEM97 in the context of non-alcoholic steatohepatitis.
-  Routed to: EvaluationAgent
+[Step 3] Score and rank
 
-[Step 4] Generate a validation plan outlining the experimental approaches needed to test the top-ranked candidates in preclinical models of non-alcoholic steatohepatitis.
-  Routed to: EvaluationAgent
+[Step 4] Generate roadmap
 
 ============================================================
-WORKFLOW COMPLETE
-LLM calls: 23 | Candidates: 5 (5 enriched)
-Parallel enrichment: True
+COMPLETE | LLM calls: 24 | Candidates: 5 (5 enriched)
 ============================================================
 
 ============================================================
@@ -209,8 +201,8 @@ TOP CANDIDATES
 ## Submission
 
 Submit:
-1. Completed `scaffold.py`
+1. Completed `starter/scaffold.py`
 2. Output files from a successful mock-mode run:
    - `candidates_tmem97_non_alcoholic_steatohepatitis.csv`
    - `audit_tmem97_non_alcoholic_steatohepatitis.json`
-3. Screenshot or text file of console output
+3. Screenshot or text capture of a live-mode run
