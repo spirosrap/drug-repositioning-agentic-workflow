@@ -625,11 +625,27 @@ class ActionPlanningAgent(BaseAgent):
         # TODO 1: Write your prompt here
         # =====================================================================
         prompt = f"""
-        # YOUR PROMPT HERE
-        # Include: TARGET={target}, DISEASE={disease}
-        # Request JSON with objective and steps
-        # Each step needs: step number, action description, task_type
-        # Required task_types: data_mining, enrichment, scoring, roadmap
+Create an action plan for a drug repurposing workflow.
+
+Context:
+- TARGET gene: {target}
+- DISEASE: {disease}
+
+Return ONLY valid JSON with this exact structure:
+{{
+  "objective": "one concise sentence",
+  "steps": [
+    {{"step": 1, "action": "short action description", "task_type": "data_mining"}},
+    {{"step": 2, "action": "short action description", "task_type": "enrichment"}},
+    {{"step": 3, "action": "short action description", "task_type": "scoring"}},
+    {{"step": 4, "action": "short action description", "task_type": "roadmap"}}
+  ]
+}}
+
+Requirements:
+- Exactly 4 steps in the order shown above.
+- Use task_type values exactly as listed: data_mining, enrichment, scoring, roadmap.
+- Do not include any extra keys or commentary outside JSON.
         """
 
         raw = self._call_llm_json(prompt, {})
@@ -705,11 +721,33 @@ class RoutingAgent(BaseAgent):
         # TODO 2: Write your routing prompt here
         # =====================================================================
         prompt = f"""
-        # YOUR PROMPT HERE
-        # Provide: candidate name, phase, MOA, pchembl_value
-        # Context: target gene, disease
-        # Ask for: literature_strategy, safety_strategy with reasoning
-        # Include routing guidelines
+You are routing an enrichment strategy for a drug repurposing candidate.
+
+Context:
+- TARGET gene: {target}
+- DISEASE: {disease}
+
+Candidate:
+- name: {candidate.name}
+- chembl_id: {candidate.chembl_id}
+- opentargets_id: {candidate.opentargets_id}
+- max_phase: {candidate.max_phase}
+- mechanism_of_action: {candidate.mechanism_of_action or "Unknown"}
+- pChEMBL: {candidate.pchembl_value}
+- synonyms: {', '.join(candidate.synonyms) if candidate.synonyms else 'None'}
+
+Choose strategies and explain why. Return ONLY valid JSON:
+{{
+  "literature_strategy": "target_focused|disease_focused|broad_search",
+  "literature_reasoning": "short justification",
+  "safety_strategy": "comprehensive|faers_only|basic",
+  "safety_reasoning": "short justification"
+}}
+
+Guidelines:
+- Phase 3–4: use comprehensive safety; prefer target_focused literature.
+- Phase 0–2: lighter safety (faers_only or basic); if MOA is unclear, prefer disease_focused.
+- Unknown MOA: bias toward disease_focused or broad_search.
         """
 
         fallback = {
@@ -1059,14 +1097,28 @@ class LiteratureAgent(BaseAgent):
         # TODO 5: Write your assessment prompt here
         # =====================================================================
         prompt = f"""
-        # YOUR PROMPT HERE
-        # Context: drug={drug}, target={target}, disease={disease}
-        # Include articles_text (provided above)
-        # Request: support_level, strength, supporting_pmids, summary
-        # Include assessment guidelines
+You are assessing biomedical literature for drug repurposing evidence.
 
-        ARTICLES:
-        {articles_text}
+Context:
+- DRUG: {drug}
+- TARGET: {target}
+- DISEASE: {disease}
+
+Articles:
+{articles_text}
+
+Return ONLY valid JSON with:
+{{
+  "support_level": "none|weak|moderate|strong",
+  "strength": 0-10,
+  "supporting_pmids": ["pmid1", "pmid2"],
+  "summary": "2-3 sentence assessment"
+}}
+
+Guidelines:
+- Be conservative: only use "strong" when there is direct experimental evidence linking the drug, target, and disease.
+- If articles are unrelated or insufficient, return support_level "none" and an empty supporting_pmids list.
+- Only include PMIDs that directly support the repurposing hypothesis.
         """
 
         fallback = {
@@ -1235,22 +1287,47 @@ class EvaluationAgent(BaseAgent):
         # TODO 6: Implement evaluator-optimizer loop
         # =====================================================================
 
-        # for iteration in range(max_iterations):
-        #
-        #     # 1. Score (first iteration) or recalculate totals (subsequent)
-        #
-        #     # 2. Sort by total_score
-        #
-        #     # 3. Critique rankings (Evaluator)
-        #
-        #     # 4. Check if approved
-        #
-        #     # 5. Refine rankings (Optimizer)
-        #
-        #     # 6. Record iteration
+        for iteration in range(max_iterations):
+
+            # 1. Score (first iteration) or recalculate totals (subsequent)
+            if iteration == 0:
+                enriched_candidates = self._score_candidates(enriched_candidates)
+            else:
+                for c in enriched_candidates:
+                    c.total_score = sum(c.scores.get(k, 0) * w for k, w in self.WEIGHTS.items())
+
+            # 2. Sort by total_score
+            enriched_candidates.sort(key=lambda c: c.total_score, reverse=True)
+            top_candidates = enriched_candidates[:TOP_N_DISPLAY]
+
+            # 3. Critique rankings (Evaluator)
+            critique = self._critique_rankings(top_candidates, target, disease)
+
+            # 4. Check if approved
+            approved = "appropriate" in critique.lower()
+            adjustments = []
+
+            # 5. Refine rankings (Optimizer)
+            if not approved:
+                enriched_candidates, adjustments = self._refine_rankings(enriched_candidates, critique)
+
+            # 6. Record iteration
+            ranking_history.append({
+                "iteration": iteration,
+                "rankings": [
+                    {"name": c.name, "score": c.total_score, "scores": c.scores}
+                    for c in top_candidates
+                ],
+                "critique": critique,
+                "adjustments": adjustments,
+                "approved": approved
+            })
+
+            if approved:
+                break
 
         # Generate rationales for top candidates
-        # self._generate_rationales(enriched_candidates[:TOP_N_DISPLAY], target, disease)
+        self._generate_rationales(enriched_candidates[:TOP_N_DISPLAY], target, disease)
 
         # =====================================================================
         # END TODO 6
@@ -1381,13 +1458,21 @@ class EvaluationAgent(BaseAgent):
         # TODO 8: Write your critique prompt here
         # =====================================================================
         prompt = f"""
-        # YOUR PROMPT HERE
-        # Include: target, disease, current rankings (summary)
-        # Ask for evaluation of whether rankings are reasonable
-        # Specify: respond "Rankings are appropriate" if good
+You are evaluating a ranked list of drug repurposing candidates.
 
-        CURRENT RANKINGS:
-        {summary}
+Context:
+- TARGET: {target}
+- DISEASE: {disease}
+
+CURRENT RANKINGS:
+{summary}
+
+Evaluate whether the rankings are reasonable and well-balanced across binding, literature support, safety, phase, and disease relevance.
+
+If the rankings are good, respond with exactly:
+Rankings are appropriate
+
+If issues exist, describe the problems and suggest which component(s) should move for which drug(s).
         """
 
         return self._call_llm(prompt)
@@ -1435,14 +1520,32 @@ class EvaluationAgent(BaseAgent):
         # =====================================================================
         # TODO 9: Write prompt and apply adjustments
         # =====================================================================
-        prompt = f"""
-        # YOUR PROMPT HERE
-        # Provide the critique
-        # Request JSON array of adjustments
-        # Specify adjustment range [-2, +2]
+        rankings_summary = "\n".join([
+            f"- {c.name}: total={c.total_score:.2f}, scores={c.scores}"
+            for c in candidates[:TOP_N_DISPLAY]
+        ])
 
-        CRITIQUE:
-        {critique}
+        prompt = f"""
+You are refining candidate rankings based on critique.
+
+CRITIQUE:
+{critique}
+
+CURRENT TOP RANKINGS:
+{rankings_summary}
+
+Return ONLY valid JSON as an array of adjustments. Each adjustment must be:
+{{
+  "drug_name": "exact drug name",
+  "component": "target_binding|literature_support|safety_profile|development_stage|disease_relevance",
+  "adjustment": -2 to +2,
+  "reason": "brief justification"
+}}
+
+Rules:
+- Use only the component names listed.
+- Keep adjustment within [-2, +2].
+- If no changes are needed, return an empty array [].
         """
 
         adjustments = self._call_llm_json(prompt, [])
@@ -1451,11 +1554,52 @@ class EvaluationAgent(BaseAgent):
         applied = []
 
         # Build lookup for finding candidates by name
-        # lookup = ...
+        lookup = {}
+        for c in candidates:
+            if c.name:
+                lookup[c.name.lower()] = c
+            if c.normalized_name:
+                lookup[c.normalized_name] = c
 
         # Apply each adjustment
-        # for adj in adjustments:
-        #     Find candidate, validate, apply, track...
+        for adj in adjustments:
+            if not isinstance(adj, dict):
+                continue
+            drug_name = (adj.get("drug_name") or "").strip()
+            component = (adj.get("component") or "").strip()
+            if not drug_name or component not in self.WEIGHTS:
+                continue
+
+            key = drug_name.lower()
+            cand = lookup.get(key)
+            if cand is None:
+                cand = lookup.get(normalize_drug_name(drug_name))
+            if cand is None:
+                continue
+
+            try:
+                delta = float(adj.get("adjustment", 0))
+            except (TypeError, ValueError):
+                continue
+            delta = max(-2.0, min(2.0, delta))
+
+            old_component = float(cand.scores.get(component, 0))
+            new_component = max(0.0, min(10.0, old_component + delta))
+            old_total = cand.total_score
+
+            cand.scores[component] = new_component
+            cand.total_score = sum(cand.scores.get(k, 0) * w for k, w in self.WEIGHTS.items())
+
+            applied.append({
+                "drug": cand.name,
+                "component": component,
+                "adjustment": delta,
+                "old_component_score": old_component,
+                "new_component_score": new_component,
+                "old_total": old_total,
+                "new_total": cand.total_score,
+                "reason": adj.get("reason", "")
+            })
 
         # Re-sort
         candidates.sort(key=lambda c: c.total_score, reverse=True)
