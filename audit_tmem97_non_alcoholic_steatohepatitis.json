@@ -1,0 +1,68 @@
+{
+  "audit_log": {
+    "started_at": "2025-01-15T00:00:00",
+    "completed_at": "2025-01-15T00:00:00",
+    "target": "TMEM97",
+    "disease": "non-alcoholic steatohepatitis",
+    "mock_mode": true,
+    "plan_generated": {
+      "objective": "Find repurposable drugs for TMEM97 in non-alcoholic steatohepatitis",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Mine ChEMBL and Open Targets",
+          "task_type": "data_mining"
+        },
+        {
+          "step": 2,
+          "action": "Enrich with literature and safety",
+          "task_type": "enrichment"
+        },
+        {
+          "step": 3,
+          "action": "Score and rank candidates",
+          "task_type": "scoring"
+        },
+        {
+          "step": 4,
+          "action": "Generate validation roadmap",
+          "task_type": "roadmap"
+        }
+      ]
+    },
+    "steps_executed": [
+      {
+        "step": 1,
+        "task_type": "data_mining",
+        "started_at": "2025-01-15T00:00:00",
+        "completed_at": "2025-01-15T00:00:00"
+      },
+      {
+        "step": 2,
+        "task_type": "enrichment",
+        "started_at": "2025-01-15T00:00:00",
+        "completed_at": "2025-01-15T00:00:00"
+      },
+      {
+        "step": 3,
+        "task_type": "scoring",
+        "started_at": "2025-01-15T00:00:00",
+        "completed_at": "2025-01-15T00:00:00"
+      },
+      {
+        "step": 4,
+        "task_type": "roadmap",
+        "started_at": "2025-01-15T00:00:00",
+        "completed_at": "2025-01-15T00:00:00"
+      }
+    ],
+    "candidates_found": 0,
+    "candidates_enriched": 0,
+    "llm_calls": 1,
+    "routing_decisions": [],
+    "errors": []
+  },
+  "candidates": [],
+  "ranking_history": [],
+  "roadmap": ""
+}

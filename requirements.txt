@@ -1,0 +1,11 @@
+openai
+requests
+pandas
+biopython
+beautifulsoup4
+lxml
+pypdf2
+arxiv
+python-dotenv
+readability-lxml
+chembl-webresource-client
