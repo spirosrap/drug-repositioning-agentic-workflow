@@ -324,6 +324,7 @@ class RoutingDecision:
 @dataclass
 class Provenance:
     chembl_id: str = ""
+    chembl_target_id: str = ""
     opentargets_id: str = ""
     pubmed_pmids: List[str] = field(default_factory=list)
     pubmed_queries_tried: List[str] = field(default_factory=list)
@@ -490,6 +491,36 @@ def get_mock_faers(drug_name: str) -> Dict:
 
 def get_mock_fda_label(drug_name: str) -> Dict:
     return MOCK_FDA_LABELS.get(normalize_drug_name(drug_name), MOCK_FDA_LABELS["default"])
+
+# -----------------------------------------------------------------------------
+# Mock overrides for action_space queries (keeps mock mode fully offline)
+# -----------------------------------------------------------------------------
+
+if USE_MOCK_DATA:
+    def _mock_query_chembl(gene: str, max_compounds: int = 20) -> Tuple[List[Dict], Optional[str]]:
+        data = get_mock_chembl(gene)[:max_compounds]
+        return data, "CHEMBL_TARGET_MOCK"
+
+    def _mock_query_opentargets(gene: str) -> Dict:
+        return get_mock_ot(gene)
+
+    def _mock_query_pubmed(query: str, max_results: int = 20, **kwargs) -> List[Dict]:
+        m = re.search(r"\"([^\"]+)\"", query or "")
+        drug_name = m.group(1) if m else (query or "").split()[0] if query else ""
+        return get_mock_pubmed(drug_name)[:max_results]
+
+    def _mock_query_faers(drug_name: str) -> Dict:
+        return get_mock_faers(drug_name)
+
+    def _mock_query_fda_labels(drug_name: str) -> Dict:
+        return get_mock_fda_label(drug_name)
+
+    # Override imported functions in mock mode
+    query_chembl = _mock_query_chembl
+    query_opentargets = _mock_query_opentargets
+    query_pubmed = _mock_query_pubmed
+    query_faers = _mock_query_faers
+    query_fda_labels = _mock_query_fda_labels
 
 # =============================================================================
 # BASE AGENT CLASS (PROVIDED - DO NOT MODIFY)
