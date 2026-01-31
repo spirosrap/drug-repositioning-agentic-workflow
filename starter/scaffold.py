@@ -1760,7 +1760,9 @@ class DrugRepurposingOrchestrator:
 
         if task_type == "data_mining":
             # Mine databases
-            pass
+            candidates, _ = self.data_miner.run(self.target, self.disease)
+            self.candidates = candidates
+            return candidates
 
         elif task_type == "enrichment":
             # Enrich top candidates with routing
@@ -1775,15 +1777,39 @@ class DrugRepurposingOrchestrator:
             #     5. Safety evaluation
             #     6. Mark enriched
             #     7. Print progress
-            pass
+            for idx in range(min(max_candidates, len(self.candidates))):
+                c = self.candidates[idx]
+                routing = self.router.route_enrichment_strategy(c, self.target, self.disease)
+
+                self.audit.routing_decisions.append({
+                    "decision_id": routing.decision_id,
+                    "candidate": c.name,
+                    "task_type": routing.task_type,
+                    "agent_name": routing.agent_name,
+                    "inputs": routing.inputs,
+                    "reasoning": routing.reasoning,
+                    "created_at": routing.created_at,
+                })
+                c.provenance.routing_decision_ids.append(routing.decision_id)
+
+                c.literature_strategy = routing.inputs.get("literature_strategy", "broad_search")
+                c.safety_strategy = routing.inputs.get("safety_strategy", "basic")
+
+                c = self.literature.enrich(c, self.target, self.disease, c.literature_strategy)
+                c = self.safety.evaluate(c, c.safety_strategy)
+                c.is_enriched = True
+                c.enrichment_timestamp = now_iso()
+
+                self.candidates[idx] = c
+                print(f"    ✓ {c.name} ({c.literature_strategy}, {c.safety_strategy})")
 
         elif task_type == "scoring":
             # Score and rank
-            pass
+            return self.evaluator.score_and_rank(self.candidates, self.target, self.disease)
 
         elif task_type == "roadmap":
             # Generate roadmap
-            pass
+            return self.evaluator.generate_roadmap(self.candidates, self.target, self.disease)
 
         return None
         # =====================================================================
