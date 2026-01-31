@@ -1,1 +1,6 @@
-
+rank,name,chembl_id,is_enriched,total_score,pchembl_value,max_phase,literature_support,safety_flags,routing_literature,routing_safety
+1,PITOLISANT HYDROCHLORIDE,CHEMBL4164059,True,6.14,8.15,4,none,,disease_focused,comprehensive
+2,ROLUPERIDONE,CHEMBL4297605,True,5.34,8.09,3,none,,disease_focused,comprehensive
+3,SIRAMESINE,CHEMBL61479,True,4.98,9.92,2,none,,disease_focused,faers_only
+4,NEMONAPRIDE,CHEMBL20734,True,4.98,8.14,2,none,,disease_focused,faers_only
+5,SPIPETHIANE,CHEMBL39900,True,4.26,8.19,0,none,,disease_focused,faers_only

@@ -1,31 +1,31 @@
 {
   "audit_log": {
-    "started_at": "2025-01-15T00:00:00",
-    "completed_at": "2025-01-15T00:00:00",
+    "started_at": "2026-01-31T07:13:36.105589",
+    "completed_at": "2026-01-31T07:21:39.418396",
     "target": "TMEM97",
     "disease": "non-alcoholic steatohepatitis",
-    "mock_mode": true,
+    "mock_mode": false,
     "plan_generated": {
-      "objective": "Find repurposable drugs for TMEM97 in non-alcoholic steatohepatitis",
+      "objective": "Identify potential drug candidates for repurposing against non-alcoholic steatohepatitis targeting TMEM97.",
       "steps": [
         {
           "step": 1,
-          "action": "Mine ChEMBL and Open Targets",
+          "action": "Collect and analyze existing drug databases for compounds affecting TMEM97.",
           "task_type": "data_mining"
         },
         {
           "step": 2,
-          "action": "Enrich with literature and safety",
+          "action": "Perform pathway enrichment analysis to identify biological pathways related to TMEM97 and non-alcoholic steatohepatitis.",
           "task_type": "enrichment"
         },
         {
           "step": 3,
-          "action": "Score and rank candidates",
+          "action": "Score identified compounds based on their predicted efficacy and safety profiles for non-alcoholic steatohepatitis.",
           "task_type": "scoring"
         },
         {
           "step": 4,
-          "action": "Generate validation roadmap",
+          "action": "Develop a roadmap for preclinical and clinical testing of top-ranked drug candidates.",
           "task_type": "roadmap"
         }
       ]
@@ -34,35 +34,464 @@
       {
         "step": 1,
         "task_type": "data_mining",
-        "started_at": "2025-01-15T00:00:00",
-        "completed_at": "2025-01-15T00:00:00"
+        "started_at": "2026-01-31T07:13:41.571702",
+        "completed_at": "2026-01-31T07:19:40.551763"
       },
       {
         "step": 2,
         "task_type": "enrichment",
-        "started_at": "2025-01-15T00:00:00",
-        "completed_at": "2025-01-15T00:00:00"
+        "started_at": "2026-01-31T07:19:40.551831",
+        "completed_at": "2026-01-31T07:20:49.078236"
       },
       {
         "step": 3,
         "task_type": "scoring",
-        "started_at": "2025-01-15T00:00:00",
-        "completed_at": "2025-01-15T00:00:00"
+        "started_at": "2026-01-31T07:20:49.078246",
+        "completed_at": "2026-01-31T07:21:23.798351"
       },
       {
         "step": 4,
         "task_type": "roadmap",
-        "started_at": "2025-01-15T00:00:00",
-        "completed_at": "2025-01-15T00:00:00"
+        "started_at": "2026-01-31T07:21:23.798387",
+        "completed_at": "2026-01-31T07:21:39.418379"
       }
     ],
-    "candidates_found": 0,
-    "candidates_enriched": 0,
-    "llm_calls": 1,
-    "routing_decisions": [],
+    "candidates_found": 5,
+    "candidates_enriched": 5,
+    "llm_calls": 20,
+    "routing_decisions": [
+      {
+        "decision_id": "cc35dd1f-ac11-497c-82b4-af389486c24e",
+        "candidate": "SIRAMESINE",
+        "task_type": "enrichment_routing",
+        "agent_name": "RoutingAgent",
+        "inputs": {
+          "literature_strategy": "disease_focused",
+          "safety_strategy": "faers_only"
+        },
+        "reasoning": "Literature: The mechanism of action for Siramesine is unknown, making a disease-focused literature search more relevant to identify potential effects on non-alcoholic steatohepatitis.. Safety: Since Siramesine is in Phase 2 and has an unknown mechanism of action, a FAERS-only safety strategy is appropriate to gather existing safety data without extensive resource investment.",
+        "created_at": "2026-01-31T07:19:44.614324"
+      },
+      {
+        "decision_id": "a333b5eb-9d4c-4eca-b697-6ba531ad75e7",
+        "candidate": "SPIPETHIANE",
+        "task_type": "enrichment_routing",
+        "agent_name": "RoutingAgent",
+        "inputs": {
+          "literature_strategy": "disease_focused",
+          "safety_strategy": "faers_only"
+        },
+        "reasoning": "Literature: The mechanism of action for SPIPETHIANE is unknown, making it more relevant to focus on literature related to non-alcoholic steatohepatitis to identify potential connections and insights.. Safety: As SPIPETHIANE is in Phase 0 and has an unknown mechanism of action, a lighter safety strategy focusing on FAERS data is appropriate to assess any reported adverse events.",
+        "created_at": "2026-01-31T07:20:00.125831"
+      },
+      {
+        "decision_id": "691b8077-adf2-4d24-9e37-e68e530db4b6",
+        "candidate": "PITOLISANT HYDROCHLORIDE",
+        "task_type": "enrichment_routing",
+        "agent_name": "RoutingAgent",
+        "inputs": {
+          "literature_strategy": "disease_focused",
+          "safety_strategy": "comprehensive"
+        },
+        "reasoning": "Literature: The mechanism of action for Pitolisant hydrochloride is unknown, making a disease-focused literature search more appropriate to identify relevant studies related to non-alcoholic steatohepatitis.. Safety: Pitolisant hydrochloride is in Phase 4, necessitating a comprehensive safety strategy to ensure thorough evaluation of its safety profile.",
+        "created_at": "2026-01-31T07:20:08.954363"
+      },
+      {
+        "decision_id": "44ef4cfc-5f3f-4a6a-9283-b84435b3756a",
+        "candidate": "NEMONAPRIDE",
+        "task_type": "enrichment_routing",
+        "agent_name": "RoutingAgent",
+        "inputs": {
+          "literature_strategy": "disease_focused",
+          "safety_strategy": "faers_only"
+        },
+        "reasoning": "Literature: Nemonapride has an unknown mechanism of action, making it more relevant to focus on literature related to non-alcoholic steatohepatitis to identify potential effects and insights.. Safety: As Nemonapride is in Phase 2 and has an unknown mechanism of action, a focused review of adverse event reports is appropriate to assess safety without extensive resources.",
+        "created_at": "2026-01-31T07:20:24.533335"
+      },
+      {
+        "decision_id": "696cee19-b39c-4298-a5b0-84e0a90ef88c",
+        "candidate": "ROLUPERIDONE",
+        "task_type": "enrichment_routing",
+        "agent_name": "RoutingAgent",
+        "inputs": {
+          "literature_strategy": "disease_focused",
+          "safety_strategy": "comprehensive"
+        },
+        "reasoning": "Literature: The mechanism of action for Roluperidone is unknown, making a disease-focused literature search more relevant to identify potential connections to non-alcoholic steatohepatitis.. Safety: Roluperidone is in Phase 3, necessitating a comprehensive safety strategy to ensure thorough evaluation of its safety profile.",
+        "created_at": "2026-01-31T07:20:37.476545"
+      }
+    ],
     "errors": []
   },
-  "candidates": [],
-  "ranking_history": [],
-  "roadmap": ""
+  "candidates": [
+    {
+      "chembl_id": "CHEMBL4164059",
+      "opentargets_id": "",
+      "name": "PITOLISANT HYDROCHLORIDE",
+      "normalized_name": "pitolisant",
+      "synonyms": [
+        "BF-2649 HYDROCHLORIDE",
+        "Ciproxidine",
+        "Ozawade",
+        "Pitolisant hydrochloride",
+        "Wakix"
+      ],
+      "source": "chembl",
+      "pchembl_value": 8.15,
+      "max_phase": 4,
+      "molecule_type": "Small molecule",
+      "mechanism_of_action": "",
+      "indications": [],
+      "disease_relevance_score": 0.0,
+      "is_enriched": true,
+      "enrichment_timestamp": "2026-01-31T07:20:20.774601",
+      "literature_strategy": "disease_focused",
+      "safety_strategy": "comprehensive",
+      "pubmed_articles": [],
+      "literature_summary": "No relevant PubMed articles found.",
+      "literature_support_level": "none",
+      "literature_strength": 0,
+      "literature_supporting_pmids": [],
+      "safety_summary": "Pitolisant hydrochloride has been associated with a total of 1,851 adverse events reported in the FAERS database, with 47.4% classified as serious. There are no boxed warnings or specific safety flags noted in the FDA label, indicating a relatively favorable safety profile.",
+      "safety_flags": [],
+      "faers_event_count": 1851,
+      "faers_serious_count": 877,
+      "has_boxed_warning": false,
+      "label_found": true,
+      "scores": {
+        "target_binding": 10,
+        "literature_support": 0.0,
+        "safety_profile": 7,
+        "development_stage": 10,
+        "disease_relevance": 0.0
+      },
+      "total_score": 6.14,
+      "ranking_rationale": "PITOLISANT HYDROCHLORIDE ranks #1 for repurposing due to its high pChEMBL value of 8.15, indicating strong binding affinity, and its advanced Phase 4 status, suggesting a well-established safety profile in humans. Despite the unknown mechanism of action and lack of literature specifically addressing its effects on TMEM97 in non-alcoholic steatohepatitis, its promising pharmacological properties and clinical readiness position it as a leading candidate for further investigation.",
+      "provenance": {
+        "chembl_id": "CHEMBL4164059",
+        "chembl_target_id": "CHEMBL4105907",
+        "opentargets_id": "",
+        "pubmed_pmids": [],
+        "pubmed_queries_tried": [
+          "\"PITOLISANT HYDROCHLORIDE\"[Title/Abstract] AND \"non-alcoholic steatohepatitis\"[Title/Abstract]"
+        ],
+        "faers_query_matched": "PITOLISANT HYDROCHLORIDE",
+        "routing_decision_ids": [
+          "691b8077-adf2-4d24-9e37-e68e530db4b6"
+        ]
+      }
+    },
+    {
+      "chembl_id": "CHEMBL4297605",
+      "opentargets_id": "",
+      "name": "ROLUPERIDONE",
+      "normalized_name": "roluperidone",
+      "synonyms": [
+        "FMI",
+        "MIN-101 FREE BASE",
+        "Roluperidona",
+        "Roluperidone"
+      ],
+      "source": "chembl",
+      "pchembl_value": 8.09,
+      "max_phase": 3,
+      "molecule_type": "Small molecule",
+      "mechanism_of_action": "",
+      "indications": [],
+      "disease_relevance_score": 0.0,
+      "is_enriched": true,
+      "enrichment_timestamp": "2026-01-31T07:20:49.078214",
+      "literature_strategy": "disease_focused",
+      "safety_strategy": "comprehensive",
+      "pubmed_articles": [],
+      "literature_summary": "No relevant PubMed articles found.",
+      "literature_support_level": "none",
+      "literature_strength": 0,
+      "literature_supporting_pmids": [],
+      "safety_summary": "ROLUPERIDONE has not reported any adverse event cases in the FAERS database, which may suggest limited market exposure. Additionally, there are no safety flags associated with this drug, indicating a potentially favorable safety profile at this time.",
+      "safety_flags": [],
+      "faers_event_count": 0,
+      "faers_serious_count": 0,
+      "has_boxed_warning": false,
+      "label_found": false,
+      "scores": {
+        "target_binding": 10,
+        "literature_support": 0.0,
+        "safety_profile": 5,
+        "development_stage": 8,
+        "disease_relevance": 0.0
+      },
+      "total_score": 5.34,
+      "ranking_rationale": "ROLUPERIDONE ranks #2 for repurposing due to its strong binding affinity indicated by a pChEMBL value of 8.09, suggesting potential efficacy against TMEM97 in the context of non-alcoholic steatohepatitis. Additionally, its advanced Phase 3 status highlights its readiness for clinical evaluation, despite the lack of detailed literature and safety data, which may be addressed through ongoing trials.",
+      "provenance": {
+        "chembl_id": "CHEMBL4297605",
+        "chembl_target_id": "CHEMBL4105907",
+        "opentargets_id": "",
+        "pubmed_pmids": [],
+        "pubmed_queries_tried": [
+          "\"ROLUPERIDONE\"[Title/Abstract] AND \"non-alcoholic steatohepatitis\"[Title/Abstract]"
+        ],
+        "faers_query_matched": "",
+        "routing_decision_ids": [
+          "696cee19-b39c-4298-a5b0-84e0a90ef88c"
+        ]
+      }
+    },
+    {
+      "chembl_id": "CHEMBL61479",
+      "opentargets_id": "",
+      "name": "SIRAMESINE",
+      "normalized_name": "siramesine",
+      "synonyms": [
+        "Siramesina",
+        "Siramesine"
+      ],
+      "source": "chembl",
+      "pchembl_value": 9.92,
+      "max_phase": 2,
+      "molecule_type": "Small molecule",
+      "mechanism_of_action": "",
+      "indications": [],
+      "disease_relevance_score": 0.0,
+      "is_enriched": true,
+      "enrichment_timestamp": "2026-01-31T07:19:56.858935",
+      "literature_strategy": "disease_focused",
+      "safety_strategy": "faers_only",
+      "pubmed_articles": [],
+      "literature_summary": "No relevant PubMed articles found.",
+      "literature_support_level": "none",
+      "literature_strength": 0,
+      "literature_supporting_pmids": [],
+      "safety_summary": "SIRAMESINE has no reported adverse event reports in the FAERS database, suggesting it may have limited market exposure. Additionally, there are no safety flags associated with this drug, indicating a potentially favorable safety profile.",
+      "safety_flags": [],
+      "faers_event_count": 0,
+      "faers_serious_count": 0,
+      "has_boxed_warning": false,
+      "label_found": false,
+      "scores": {
+        "target_binding": 10,
+        "literature_support": 0.0,
+        "safety_profile": 5,
+        "development_stage": 6,
+        "disease_relevance": 0.0
+      },
+      "total_score": 4.98,
+      "ranking_rationale": "SIRAMESINE ranks #3 for repurposing due to its high pChEMBL value of 9.92, indicating strong binding affinity to the target TMEM97, which is implicated in non-alcoholic steatohepatitis. Although it is in Phase 2 trials and lacks detailed safety and literature data, its promising pharmacological profile suggests potential efficacy in addressing this disease.",
+      "provenance": {
+        "chembl_id": "CHEMBL61479",
+        "chembl_target_id": "CHEMBL4105907",
+        "opentargets_id": "",
+        "pubmed_pmids": [],
+        "pubmed_queries_tried": [
+          "\"SIRAMESINE\"[Title/Abstract] AND \"non-alcoholic steatohepatitis\"[Title/Abstract]"
+        ],
+        "faers_query_matched": "",
+        "routing_decision_ids": [
+          "cc35dd1f-ac11-497c-82b4-af389486c24e"
+        ]
+      }
+    },
+    {
+      "chembl_id": "CHEMBL20734",
+      "opentargets_id": "",
+      "name": "NEMONAPRIDE",
+      "normalized_name": "nemonapride",
+      "synonyms": [
+        "Emilace",
+        "Nemonaprida",
+        "Nemonapride"
+      ],
+      "source": "chembl",
+      "pchembl_value": 8.14,
+      "max_phase": 2,
+      "molecule_type": "Small molecule",
+      "mechanism_of_action": "",
+      "indications": [],
+      "disease_relevance_score": 0.0,
+      "is_enriched": true,
+      "enrichment_timestamp": "2026-01-31T07:20:34.610382",
+      "literature_strategy": "disease_focused",
+      "safety_strategy": "faers_only",
+      "pubmed_articles": [],
+      "literature_summary": "No relevant PubMed articles found.",
+      "literature_support_level": "none",
+      "literature_strength": 0,
+      "literature_supporting_pmids": [],
+      "safety_summary": "Nemonapride has not reported any adverse event reports in the FAERS database, suggesting it may have limited market exposure. Additionally, there are no safety flags associated with this drug, indicating a potentially favorable safety profile.",
+      "safety_flags": [],
+      "faers_event_count": 0,
+      "faers_serious_count": 0,
+      "has_boxed_warning": false,
+      "label_found": false,
+      "scores": {
+        "target_binding": 10,
+        "literature_support": 0.0,
+        "safety_profile": 5,
+        "development_stage": 6,
+        "disease_relevance": 0.0
+      },
+      "total_score": 4.98,
+      "ranking_rationale": "",
+      "provenance": {
+        "chembl_id": "CHEMBL20734",
+        "chembl_target_id": "CHEMBL4105907",
+        "opentargets_id": "",
+        "pubmed_pmids": [],
+        "pubmed_queries_tried": [
+          "\"NEMONAPRIDE\"[Title/Abstract] AND \"non-alcoholic steatohepatitis\"[Title/Abstract]"
+        ],
+        "faers_query_matched": "",
+        "routing_decision_ids": [
+          "44ef4cfc-5f3f-4a6a-9283-b84435b3756a"
+        ]
+      }
+    },
+    {
+      "chembl_id": "CHEMBL39900",
+      "opentargets_id": "",
+      "name": "SPIPETHIANE",
+      "normalized_name": "spipethiane",
+      "synonyms": [],
+      "source": "chembl",
+      "pchembl_value": 8.19,
+      "max_phase": 0,
+      "molecule_type": "Small molecule",
+      "mechanism_of_action": "",
+      "indications": [],
+      "disease_relevance_score": 0.0,
+      "is_enriched": true,
+      "enrichment_timestamp": "2026-01-31T07:20:05.854140",
+      "literature_strategy": "disease_focused",
+      "safety_strategy": "faers_only",
+      "pubmed_articles": [],
+      "literature_summary": "No relevant PubMed articles found.",
+      "literature_support_level": "none",
+      "literature_strength": 0,
+      "literature_supporting_pmids": [],
+      "safety_summary": "SPIPETHIANE has no reported adverse event cases in the FAERS database, suggesting it may have limited market exposure. Additionally, there are no safety flags associated with this drug, indicating a potentially favorable safety profile.",
+      "safety_flags": [],
+      "faers_event_count": 0,
+      "faers_serious_count": 0,
+      "has_boxed_warning": false,
+      "label_found": false,
+      "scores": {
+        "target_binding": 10,
+        "literature_support": 0.0,
+        "safety_profile": 5,
+        "development_stage": 2,
+        "disease_relevance": 0.0
+      },
+      "total_score": 4.260000000000001,
+      "ranking_rationale": "",
+      "provenance": {
+        "chembl_id": "CHEMBL39900",
+        "chembl_target_id": "CHEMBL4105907",
+        "opentargets_id": "",
+        "pubmed_pmids": [],
+        "pubmed_queries_tried": [
+          "\"SPIPETHIANE\"[Title/Abstract] AND \"non-alcoholic steatohepatitis\"[Title/Abstract]"
+        ],
+        "faers_query_matched": "",
+        "routing_decision_ids": [
+          "a333b5eb-9d4c-4eca-b697-6ba531ad75e7"
+        ]
+      }
+    }
+  ],
+  "ranking_history": [
+    {
+      "iteration": 0,
+      "rankings": [
+        {
+          "name": "PITOLISANT HYDROCHLORIDE",
+          "score": 6.14,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 7,
+            "development_stage": 10,
+            "disease_relevance": 0.0
+          }
+        },
+        {
+          "name": "ROLUPERIDONE",
+          "score": 5.34,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 5,
+            "development_stage": 8,
+            "disease_relevance": 0.0
+          }
+        },
+        {
+          "name": "SIRAMESINE",
+          "score": 4.98,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 5,
+            "development_stage": 6,
+            "disease_relevance": 0.0
+          }
+        }
+      ],
+      "critique": "The rankings have some issues that need to be addressed:\n\n1. **PITOLISANT HYDROCHLORIDE**: While it has the highest score and is in Phase 4, there is no literature support, which raises concerns about its relevance and safety for the target disease. The score may not fully reflect its applicability to non-alcoholic steatohepatitis (NASH).\n\n2. **ROLUPERIDONE**: This drug is in Phase 3 and has a decent score, but like PITOLISANT, it lacks literature support. Its position is reasonable given its phase, but the absence of literature makes it less compelling.\n\n3. **SIRAMESINE**: Although it has the lowest score, it has the highest pChEMBL value, indicating strong binding potential. However, it is in Phase 2 and also lacks literature support. Its position may need to be reconsidered based on its binding affinity.\n\n**Suggestions**:\n- Consider moving **SIRAMESINE** higher in the rankings due to its higher pChEMBL value, which suggests better binding potential, despite being in an earlier phase.\n- Reassess the weight given to literature support in the rankings, as all candidates currently lack it. If literature support is critical, all candidates may need to be ranked lower until more data is available.\n\nOverall, the rankings could be improved by adjusting the position of SIRAMESINE and reassessing the importance of literature support in the context of drug repurposing for NASH.",
+      "adjustments": [],
+      "approved": false
+    },
+    {
+      "iteration": 1,
+      "rankings": [
+        {
+          "name": "PITOLISANT HYDROCHLORIDE",
+          "score": 6.14,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 7,
+            "development_stage": 10,
+            "disease_relevance": 0.0
+          }
+        },
+        {
+          "name": "ROLUPERIDONE",
+          "score": 5.34,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 5,
+            "development_stage": 8,
+            "disease_relevance": 0.0
+          }
+        },
+        {
+          "name": "SIRAMESINE",
+          "score": 4.98,
+          "scores": {
+            "target_binding": 10,
+            "literature_support": 0.0,
+            "safety_profile": 5,
+            "development_stage": 6,
+            "disease_relevance": 0.0
+          }
+        }
+      ],
+      "critique": "The rankings have some issues that need to be addressed:\n\n1. **PITOLISANT HYDROCHLORIDE**: While it has the highest score and is in Phase 4, there is no literature support provided. The score is relatively high, but the lack of literature could indicate limited evidence for its efficacy in treating non-alcoholic steatohepatitis (NASH).\n\n2. **ROLUPERIDONE**: This drug is in Phase 3, which is a strong position, but it has a lower score than PITOLISANT. The lack of literature support is also a concern here, as it may indicate insufficient evidence for its use in this context.\n\n3. **SIRAMESINE**: Although it has the highest pChEMBL value, it is in Phase 2 and has the lowest overall score. The absence of literature support is a common issue across all candidates, but the lower phase and score suggest it may not be as promising as the others.\n\n**Suggestions for Re-ranking**:\n- **PITOLISANT HYDROCHLORIDE** should be moved down due to the lack of literature support despite its Phase 4 status.\n- **ROLUPERIDONE** could be moved up slightly due to its Phase 3 status, but it still lacks literature support.\n- **SIRAMESINE** should remain in its position, but its potential should be reconsidered given its high pChEMBL value.\n\nOverall, the rankings should reflect a balance between phase, score, and literature support. Therefore, I suggest the following order:\n1. ROLUPERIDONE\n2. PITOLISANT HYDROCHLORIDE\n3. SIRAMESINE\n\nThis adjustment emphasizes the importance of clinical phase and potential evidence for efficacy in the context of NASH.",
+      "adjustments": [
+        {
+          "drug": "PITOLISANT HYDROCHLORIDE",
+          "component": "literature_support",
+          "adjustment": -2.0,
+          "old_component_score": 0.0,
+          "new_component_score": 0.0,
+          "old_total": 6.14,
+          "new_total": 6.14,
+          "reason": "Lack of literature support indicates limited evidence for efficacy in treating NASH."
+        }
+      ],
+      "approved": false
+    }
+  ],
+  "roadmap": "# 3-Month Validation Roadmap for Drug Repurposing for TMEM97 in Non-Alcoholic Steatohepatitis (NASH)\n\n## Executive Summary\nThis roadmap outlines a structured approach to validate the top candidates for repurposing drugs targeting TMEM97 in the treatment of non-alcoholic steatohepatitis (NASH). The selected candidates are PITOLISANT HYDROCHLORIDE, ROLUPERIDONE, and SIRAMESINE, with scores reflecting their potential efficacy and development phases. The validation process will span three months, focusing on target engagement, disease modeling, and a go/no-go decision based on gathered data. Limitations in existing data will be acknowledged throughout the process to ensure a realistic assessment of each candidate's potential.\n\n## Month 1: Target Engagement\n### Objectives:\n- Assess the binding affinity and activity of each candidate drug on TMEM97.\n- Evaluate the pharmacokinetics and pharmacodynamics of the drugs in relevant biological systems.\n\n### Activities:\n1. **In Vitro Binding Studies**: \n   - Conduct assays to measure the binding affinity of PITOLISANT, ROLUPERIDONE, and SIRAMESINE to TMEM97.\n   - Utilize surface plasmon resonance (SPR) or similar techniques.\n\n2. **Cell Line Studies**:\n   - Use human hepatocyte cell lines to evaluate the modulation of TMEM97 activity by each drug.\n   - Measure downstream signaling pathways affected by TMEM97 activation.\n\n3. **Pharmacokinetic Analysis**:\n   - Review existing pharmacokinetic data for each drug and conduct additional studies if necessary to understand absorption, distribution, metabolism, and excretion (ADME) profiles.\n\n### Deliverables:\n- A report summarizing binding affinities, cellular activity, and pharmacokinetic profiles.\n- Recommendations for the most promising candidates based on target engagement.\n\n## Month 2: Disease Models\n### Objectives:\n- Validate the efficacy of the top candidates in preclinical models of NASH.\n- Assess the impact of each drug on key NASH-related endpoints.\n\n### Activities:\n1. **Animal Models**:\n   - Utilize established NASH models (e.g., high-fat diet-induced NASH in mice) to evaluate the effects of each drug.\n   - Monitor liver histology, steatosis, inflammation, and fibrosis progression.\n\n2. **Biomarker Analysis**:\n   - Measure relevant biomarkers (e.g., ALT, AST, liver triglycerides) to assess drug efficacy.\n   - Evaluate changes in TMEM97 expression and related metabolic pathways.\n\n3. **Dose-Response Studies**:\n   - Determine optimal dosing regimens for each candidate based on preliminary efficacy data.\n\n### Deliverables:\n- A comprehensive report detailing the effects of each drug on NASH progression in animal models.\n- Identification of the most effective candidate(s) for further development.\n\n## Month 3: Go/No-Go Decision\n### Objectives:\n- Synthesize data from target engagement and disease models to make an informed decision on the continuation of drug development.\n\n### Activities:\n1. **Data Integration**:\n   - Compile and analyze data from Month 1 and Month 2 to assess overall candidate performance.\n   - Compare efficacy, safety profiles, and potential for clinical translation.\n\n2. **Stakeholder Review**:\n   - Present findings to stakeholders, including researchers, clinicians, and potential investors.\n   - Gather feedback and insights to inform the decision-making process.\n\n3. **Decision Making**:\n   - Based on the integrated data, determine whether to proceed with further development of the top candidate(s) or to halt the project.\n\n### Deliverables:\n- A final report summarizing the validation process, findings, and recommendations for the go/no-go decision.\n- A strategic plan for the next steps if a candidate is selected for further development.\n\n## Data Limitations\n- Existing data on TMEM97's role in NASH may be limited, necessitating careful interpretation of results.\n- Variability in animal models and human translation may affect the predictability of outcomes.\n- Pharmacokinetic data may not fully represent human responses, requiring further validation in clinical settings.\n\nThis roadmap provides a clear framework for evaluating the potential of PITOLISANT, ROLUPERIDONE, and SIRAMESINE in the context of TMEM97-targeted therapy for NASH, ensuring a systematic approach to drug repurposing."
 }
